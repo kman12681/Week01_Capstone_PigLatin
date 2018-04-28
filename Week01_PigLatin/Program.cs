@@ -10,61 +10,74 @@ namespace Week01_PigLatin
     {
         static void Main(string[] args)
         {
-           
             GetWelcome();
-
             bool again = true;
             while (again)
-
             {
-
-                GetPigLatin();
-
+                GetSentence();
                 again = GetContinue();
             }
-
             GetGoodbye();
         }
 
-        static void GetPigLatin()
+        static void GetSentence() // method call for user input
 
         {
-            Console.Write("Enter a word: ");
-            string word = Console.ReadLine().ToLower();
-
-            string vowels = "aeiou";
-
+            Console.Write("Enter a sentence: ");
+            string sentence = Console.ReadLine(); //.ToLower(); 
+            string vowels = "aeiouAEIOU";
             Console.WriteLine();
             Console.WriteLine("---Translated to Pig Latin is---\n");
-            for (int i = 0; i < word.Length; i++)
+
+            TranslatePigLatin(sentence, vowels); // method call to do the translation
+
+        }
+
+        static void TranslatePigLatin(string pork, string beef)
+
+        {
+            string[] words = pork.Split(' ', '.'); // splits at each " " and "." user input into a string array of words 
+            foreach (string part in words) // and then runs the following series of steps on each word in the array
             {
-                for (int j = 0; j < vowels.Length; j++)
+                bool success = true;
+                while (success)
                 {
-                    if (word[i] == vowels[j])
+                    for (int i = 0; i < part.Length; i++) // checks for the number of letters (indexes) in each word
                     {
-                        if (i == 0)
-                        {
-                            Console.WriteLine($"{word}way\n");
-                            i = word.Length;
-                            j = vowels.Length;
-                        }
-                        else
-                        {
-                            string newWord = word.Substring(i, word.Length - i);
+                        for (int j = 0; j < beef.Length; j++) // compares each letter of the word against each letter in our "word" of vowels
+                            if (part[i] == beef[j]) // at the first indexed occurrence that matches any vowel, continue on
+                            {
 
-                            string start = word.Substring(0, i);
+                                if (i == 0) // if the first occurrence is at the beginning of the word, write the word with "way" appended.
 
-                            Console.WriteLine($"{newWord}{start}ay\n");
-                            i = word.Length;
-                            j = vowels.Length;
-                        }
+                                {
+                                    Console.Write($"{part}way ");
+                                    i = part.Length;
+                                    j = beef.Length;
+                                }
+                                else // if the first occurrence is not at the beginning of the word, make this spot the new beginning of the word,
+                                     // and move the letters before the vowel to the end, and append "ay"
+                                {
+                                    string vowelForward = part.Substring(i, part.Length - i);
+
+                                    string wordBegin = part.Substring(0, i);
+
+                                    Console.Write($"{vowelForward}{wordBegin}ay ");
+
+                                    i = part.Length;
+                                    j = beef.Length;
+                                }
+
+                            }
                     }
+                    //success = false;
                 }
             }
-            
-        }        
+            return;
+        }
 
         static void GetWelcome()
+
         {
             Console.WriteLine("\t=======================");
             Console.WriteLine("\t|     Amazing         |\n\t|       Pig           |\n\t|         Latin       |\n\t|          Translator |");
@@ -72,11 +85,13 @@ namespace Week01_PigLatin
         }
 
         static bool GetContinue()
+
         {
             while (true)
             {
                 //ask user if they want to continue
-                Console.Write("Do you want to translate another word (y/n)? ");
+                Console.WriteLine();
+                Console.Write("\nDo you want to translate another sentence (y/n)? ");
                 //get string input
                 string input = Console.ReadLine();
                 Console.WriteLine();
@@ -94,7 +109,6 @@ namespace Week01_PigLatin
                 //anything else, ask again
                 Console.WriteLine("Not a valid entry\n");
             }
-
         }
 
         static void GetGoodbye()
@@ -105,3 +119,9 @@ namespace Week01_PigLatin
         }
     }
 }
+
+
+
+
+
+
