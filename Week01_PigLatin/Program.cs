@@ -14,18 +14,19 @@ namespace Week01_PigLatin
             bool again = true;
             while (again)
             {
-                GetSentence();
+                RunTranslation();
                 again = GetContinue();
             }
             GetGoodbye();
         }
 
-        static void GetSentence() // method call for user input
+        static void RunTranslation() // method call for user input
 
         {
             Console.Write("Enter a sentence: ");
-            string sentence = Console.ReadLine(); //.ToLower(); 
+            string sentence = Console.ReadLine(); 
             string vowels = "aeiouAEIOU";
+
             Console.WriteLine();
             Console.WriteLine("---Translated to Pig Latin is---\n");
 
@@ -36,18 +37,30 @@ namespace Week01_PigLatin
         static void TranslatePigLatin(string pork, string beef)
 
         {
-            string[] words = pork.Split(' ', '.'); // splits at each " " and "." user input into a string array of words 
+            string[] words = pork.Split(' '); // splits user input at each " " into a string array of words             
+
             foreach (string part in words) // and then runs the following series of steps on each word in the array
             {
-                bool success = true;
-                while (success)
+
+                if (HasSpecialCharOrNum(part)) // method to check if each word has a special character in it
                 {
-                    for (int i = 0; i < part.Length; i++) // checks for the number of letters (indexes) in each word
+                    Console.Write($"{part} "); // if yes, the word is printed and skips translation
+                }
+                else if (!HasNoVowels(part))
+                {
+                    Console.Write($"{part} ");
+                }
+
+                else if (!HasSpecialCharOrNum(part))                   
+
+                    for (int i = 0; i < part.Length; i++)
+
+                    // checks for the number of letters (indexes) in each word
                     {
                         for (int j = 0; j < beef.Length; j++) // compares each letter of the word against each letter in our "word" of vowels
+                        {
                             if (part[i] == beef[j]) // at the first indexed occurrence that matches any vowel, continue on
                             {
-
                                 if (i == 0) // if the first occurrence is at the beginning of the word, write the word with "way" appended.
 
                                 {
@@ -67,13 +80,35 @@ namespace Week01_PigLatin
                                     i = part.Length;
                                     j = beef.Length;
                                 }
-
                             }
+
+                        }
                     }
-                    //success = false;
-                }
+
             }
             return;
+        }
+
+        public static bool HasSpecialCharOrNum(string input)
+        {
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,0123456789""";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+
+            return false;
+        }
+
+        public static bool HasNoVowels(string input)
+        {
+            string specialChar = "aeiouAEIOU";
+            foreach (var item in specialChar)
+            {
+                if (input.Contains(item)) return true;
+            }
+
+            return false;
         }
 
         static void GetWelcome()
