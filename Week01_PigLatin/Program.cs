@@ -35,7 +35,7 @@ namespace Week01_PigLatin
 
 
             GetThinking();                                                 // method to display thinking header           
-            
+
 
             TranslatePigLatin(sentence, vowels);                           // method call to do the translation        
 
@@ -47,8 +47,8 @@ namespace Week01_PigLatin
             string[] words = pork.Split(' ');                              // splits user input at each space into a string array of words 
             Console.WriteLine($"\"{pork}\"");
             Console.WriteLine();
-            Console.WriteLine("becomes:\n");           
-            
+            Console.WriteLine("becomes:\n");
+
             foreach (string part in words)                                 // and then runs the following series of steps on each word in the array
             {
                 if (HasSpecialCharOrNum(part))                             // method to check if each word has a special character in it
@@ -66,34 +66,75 @@ namespace Week01_PigLatin
                     {
                         for (int j = 0; j < beef.Length; j++)              // compares each letter of the word against each letter in our "word" of vowels
                         {
+
                             if (part[i] == beef[j])                        // at the first indexed occurrence that matches any vowel, continue on
-                            {  
+
                                 if (i == 0)                                // if the first occurrence is at the beginning of the word, write the word with "way" appended.
 
+
+                                    if (CheckAllUpperCase(part, part.Length - 1))
+
+                                    {
+                                        Console.Write($"{part}WAY ");
+                                        i = part.Length;
+                                        j = beef.Length;
+                                        continue;
+                                    }
+                                    else if (!CheckTitleCase(part, 0))          // method to check if first letter of word is not uppercase.
+                                    {
+                                        Console.Write($"{part}way ");
+                                        i = part.Length;
+                                        j = beef.Length;
+                                    }
+                                    else
+                                    {
+                                        Console.Write($"{part.Substring(0, 1).ToUpper()}{part.Substring(1)}way ");  //  If uppercase, translation maintains uppercase in first index.
+                                        i = part.Length;
+                                        j = beef.Length;
+                                    }
+
+
+                                else
+
                                 {
-                                    Console.Write($"{part}way ");
+                                    if (CheckAllUpperCase(part, part.Length - 1))
+
+                                    {
+                                        string vowelForward = part.Substring(i, part.Length - i).ToUpper();
+                                        string wordBegin = part.Substring(0, i).ToUpper();
+                                        Console.Write($"{vowelForward}{wordBegin}AY ");
+                                        i = part.Length;
+                                        j = beef.Length;
+                                        continue;
+                                    }
+
+                                    else if (!CheckTitleCase(part, 0))
+                                    {
+                                        string vowelForward = part.Substring(i, part.Length - i);
+
+                                        string wordBegin = part.Substring(0, i);
+
+                                        Console.Write($"{vowelForward}{wordBegin}ay ");
+                                    }
+                                    else
+                                    {
+
+                                        string vowelForward = part.Substring(i, part.Length - i).ToLower();
+                                        string start = part.Substring(0, 1).ToUpper();
+
+                                        string wordBegin = part.Substring(0, i).ToLower();
+
+                                        Console.Write($"{start}{vowelForward}{wordBegin}ay ");
+                                    }
                                     i = part.Length;
                                     j = beef.Length;
                                 }
-                                else                                       // if the first occurrence is not at the beginning of the word, make this spot the new beginning of the word,
-                                                                           // and move the letters before the vowel to the end, and append "ay"
-                                {
-                                    string vowelForward = part.Substring(i, part.Length - i);
-
-                                    string wordBegin = part.Substring(0, i);
-
-                                    Console.Write($"{vowelForward}{wordBegin}ay ");
-
-                                    i = part.Length;
-                                    j = beef.Length;
-                                }
-                            }
                         }
                     }
+
             }
             return;
         }
-
         public static bool EmptyTest(string chicken)                    // method to verify that text was entered - checks for spaces and tabs
         {
             string turkey = chicken.TrimStart(' ');
@@ -127,6 +168,26 @@ namespace Week01_PigLatin
 
             return false;
         }
+
+        public static bool CheckAllUpperCase(string sheep, int lamb)
+        {
+            {
+                if (Char.IsUpper(sheep, lamb))
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool CheckTitleCase(string cow, int goat)
+        {
+            {
+                if (Char.IsUpper(cow, goat))
+                    return true;
+            }
+            return false;
+        }
+
+
 
         static void GetWelcome()
 
@@ -177,8 +238,8 @@ namespace Week01_PigLatin
 
         static void GetGoodbye()
 
-        {           
-                        
+        {
+
             Console.WriteLine("______________________________");
             Console.WriteLine();
             Console.WriteLine("hanktay ouyay orfay layingpay!");
@@ -188,7 +249,12 @@ namespace Week01_PigLatin
             Console.ReadLine();
         }
     }
+
+
+
+
 }
+
 
 
 
