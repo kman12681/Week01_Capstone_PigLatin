@@ -20,56 +20,63 @@ namespace Week01_PigLatin
             GetGoodbye();
         }
 
-        static void RunTranslation() // method call for user input
+        static void RunTranslation()
 
         {
-            Console.Write("Enter a sentence: ");
-            string sentence = Console.ReadLine(); 
+            string sentence = "";
             string vowels = "aeiouAEIOU";
 
-            Console.WriteLine();
-            Console.WriteLine("---Translated to Pig Latin is---\n");
+            do
+            {
+                Console.Write("Enter a word or sentence: ");
+                sentence = Console.ReadLine();
 
-            TranslatePigLatin(sentence, vowels); // method call to do the translation
+            } while (EmptyTest(sentence));
+
+
+            GetThinking();                                                 // method to display thinking header           
+            
+
+            TranslatePigLatin(sentence, vowels);                           // method call to do the translation        
 
         }
 
         static void TranslatePigLatin(string pork, string beef)
 
         {
-            string[] words = pork.Split(' '); // splits user input at each " " into a string array of words             
-
-            foreach (string part in words) // and then runs the following series of steps on each word in the array
+            string[] words = pork.Split(' ');                              // splits user input at each space into a string array of words 
+            Console.WriteLine($"\"{pork}\"");
+            Console.WriteLine();
+            Console.WriteLine("becomes:\n");           
+            
+            foreach (string part in words)                                 // and then runs the following series of steps on each word in the array
             {
-
-                if (HasSpecialCharOrNum(part)) // method to check if each word has a special character in it
+                if (HasSpecialCharOrNum(part))                             // method to check if each word has a special character in it
                 {
-                    Console.Write($"{part} "); // if yes, the word is printed and skips translation
+                    Console.Write($"{part} ");                             // if yes, the word is printed and skips translation
                 }
-                else if (!HasNoVowels(part))
+                else if (!HasNoVowels(part))                               // method to check is word has no vowels at all, if so prints word and skips translation
                 {
                     Console.Write($"{part} ");
                 }
 
-                else if (!HasSpecialCharOrNum(part))                   
+                else if (!HasSpecialCharOrNum(part))
 
-                    for (int i = 0; i < part.Length; i++)
-
-                    // checks for the number of letters (indexes) in each word
+                    for (int i = 0; i < part.Length; i++)                  // checks for the number of letters (indexes) in each word
                     {
-                        for (int j = 0; j < beef.Length; j++) // compares each letter of the word against each letter in our "word" of vowels
+                        for (int j = 0; j < beef.Length; j++)              // compares each letter of the word against each letter in our "word" of vowels
                         {
-                            if (part[i] == beef[j]) // at the first indexed occurrence that matches any vowel, continue on
-                            {
-                                if (i == 0) // if the first occurrence is at the beginning of the word, write the word with "way" appended.
+                            if (part[i] == beef[j])                        // at the first indexed occurrence that matches any vowel, continue on
+                            {  
+                                if (i == 0)                                // if the first occurrence is at the beginning of the word, write the word with "way" appended.
 
                                 {
                                     Console.Write($"{part}way ");
                                     i = part.Length;
                                     j = beef.Length;
                                 }
-                                else // if the first occurrence is not at the beginning of the word, make this spot the new beginning of the word,
-                                     // and move the letters before the vowel to the end, and append "ay"
+                                else                                       // if the first occurrence is not at the beginning of the word, make this spot the new beginning of the word,
+                                                                           // and move the letters before the vowel to the end, and append "ay"
                                 {
                                     string vowelForward = part.Substring(i, part.Length - i);
 
@@ -81,17 +88,27 @@ namespace Week01_PigLatin
                                     j = beef.Length;
                                 }
                             }
-
                         }
                     }
-
             }
             return;
         }
 
+        public static bool EmptyTest(string chicken)                    // method to verify that text was entered - checks for spaces and tabs
+        {
+            string turkey = chicken.TrimStart(' ');
+
+            if (String.IsNullOrEmpty(turkey))
+                return true;
+            else if (chicken.Contains('\t'))
+                return true;
+            else
+                return false;
+        }
+
         public static bool HasSpecialCharOrNum(string input)
         {
-            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;'<>_,0123456789""";
+            string specialChar = @"\|!#$%&/()=?»«@£§€{}.-;<>_,0123456789""";
             foreach (var item in specialChar)
             {
                 if (input.Contains(item)) return true;
@@ -119,12 +136,24 @@ namespace Week01_PigLatin
             Console.WriteLine("\t=======================\n");
         }
 
+        static void GetThinking()
+        {
+            Console.WriteLine();
+            Console.WriteLine("___________________");
+            Console.WriteLine();
+            Console.WriteLine("    thinking.....");
+            Console.WriteLine("___________________");
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+
         static bool GetContinue()
 
         {
             while (true)
             {
                 //ask user if they want to continue
+                Console.WriteLine();
                 Console.WriteLine();
                 Console.Write("\nDo you want to translate another sentence (y/n)? ");
                 //get string input
@@ -148,8 +177,14 @@ namespace Week01_PigLatin
 
         static void GetGoodbye()
 
-        {
+        {           
+                        
+            Console.WriteLine("______________________________");
+            Console.WriteLine();
             Console.WriteLine("hanktay ouyay orfay layingpay!");
+            Console.WriteLine("______________________________");
+            Console.WriteLine();
+            Console.WriteLine();
             Console.ReadLine();
         }
     }
